@@ -95,8 +95,8 @@ int client_handshake(int *to_server) {
   write(*to_server, buffer, sizeof(buffer));
   
   int from_server = open(buffer, O_RDONLY);
-  read(from_server, buffer, sizeof(buffer));
   remove(buffer);
+  read(from_server, buffer, sizeof(buffer));
   
   int syn_ack;
   sscanf(buffer, "%d", &syn_ack);
