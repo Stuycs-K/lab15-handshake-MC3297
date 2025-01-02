@@ -7,7 +7,7 @@ int main() {
 
   from_server = client_handshake( &to_server );
 
-  char message[] = "hello amogus\n";
+  char message[] = "hello amogus ";
   write(to_server, message, sizeof(message));
 
   char buffer[BUFFER_SIZE];

@@ -9,7 +9,7 @@ int main() {
   char message[BUFFER_SIZE];
   read(from_client, message, sizeof(message));
   
-  char cat[] = "3297";
+  char cat[] = "balls";
   strcat(message, cat);
   printf("message from server to client: %s\n", message);
   write(to_client, message, sizeof(message));

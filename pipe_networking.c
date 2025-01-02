@@ -56,10 +56,13 @@ int server_handshake(int *to_client) {
   write(*to_client, buffer, sizeof(buffer));
   
   //receive ACK which is randint+1
+  read(from_client, buffer, sizeof(buffer));
   int ack;
-  read(from_client, &ack, sizeof(ack));
-  if (ack != randint+1) perror("ack mismatch with syn_ack");
-  
+  sscanf(buffer, "%d", &ack);
+  if (ack != randint+1) {
+    fprintf(stderr, "mismatch\n");
+    perror("ack mismatch with syn_ack");
+  }
   return from_client;
 }
 
