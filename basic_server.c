@@ -11,5 +11,6 @@ int main() {
   
   char cat[] = "3297";
   strcat(message, cat);
+  printf("message from server to client: %s\n", message);
   write(to_client, message, sizeof(message));
 }

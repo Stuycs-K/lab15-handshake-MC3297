@@ -33,6 +33,6 @@ int server_setup();
 
 //multi_server
 int multi_server_setup();
-int multi_server_connect(int from_client, struct message m);
+//int multi_server_connect(int from_client, struct message m);
 
 #endif
