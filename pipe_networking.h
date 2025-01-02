@@ -11,7 +11,7 @@
 #define NETWORKING_H
 #define WKP "mario"
 
-#define HANDSHAKE_BUFFER_SIZE 10
+#define HANDSHAKE_BUFFER_SIZE 50
 #define BUFFER_SIZE 1000
 #define MAX_CLIENTS 100
 
