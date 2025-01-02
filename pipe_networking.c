@@ -41,12 +41,15 @@ int server_setup() {
   returns the file descriptor for the upstream pipe (see server setup).
   =========================*/
 int server_handshake(int *to_client) {
+  fprintf(stderr, "begin server handshake\n");
   int from_client = server_setup();
+  
   
   //receive PP from SYN
   char buffer[HANDSHAKE_BUFFER_SIZE];
   //buffer contains pid of client as private pipe
   if (read(from_client, buffer, sizeof(buffer)) == -1) perror("reading from client");
+  fprintf(stderr, "receive PP from SYN as %s\n", buffer);
   
   //send rand_int for SYN_ACK
   *to_client = open(buffer, O_WRONLY);
@@ -54,15 +57,18 @@ int server_handshake(int *to_client) {
   int randint = rand_int();
   sprintf(buffer, "%d", randint);
   write(*to_client, buffer, sizeof(buffer));
+  fprintf(stderr, "sent randint as %s\n", buffer);
   
   //receive ACK which is randint+1
   read(from_client, buffer, sizeof(buffer));
   int ack;
   sscanf(buffer, "%d", &ack);
+  fprintf(stderr, "receive ack as %d\n", ack);
   if (ack != randint+1) {
     fprintf(stderr, "mismatch\n");
     perror("ack mismatch with syn_ack");
   }
+  fprintf(stderr, "end server handshake\n");
   return from_client;
 }
 
@@ -77,10 +83,12 @@ int server_handshake(int *to_client) {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int client_handshake(int *to_server) {
+  fprintf(stderr, "begin client handshake\n");
   //use pid as pp, create pp pipe
   char buffer[HANDSHAKE_BUFFER_SIZE];
   sprintf(buffer, "%d", getpid());
   mkfifo(buffer, 0666);
+  fprintf(stderr, "PP pid is %s\n", buffer);
   
   //open WKP to write SYN (pp as pid)
   *to_server = open(WKP, O_WRONLY);
@@ -93,8 +101,10 @@ int client_handshake(int *to_server) {
   int syn_ack;
   sscanf(buffer, "%d", &syn_ack);
   sprintf(buffer, "%d", syn_ack+1);
+  fprintf(stderr, "read synack as %d, added 1\n", syn_ack);
   write(*to_server, buffer, sizeof(buffer));
   
+  fprintf(stderr, "end client handshake\n");
   return from_server;
 }
 
